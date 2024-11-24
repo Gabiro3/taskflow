@@ -46,3 +46,4 @@ public/vid3.mp4
 public/vid4.mp4
 
 env/
+.env
