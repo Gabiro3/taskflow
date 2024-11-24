@@ -12,7 +12,7 @@ import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import { toast } from 'react-toastify';
 
-const page = ({ params }: { params: Promise<{ projectId: string }> }) => {
+const Page = ({ params }: { params: Promise<{ projectId: string }> }) => {
 
     const modules = {
         toolbar: [
@@ -136,4 +136,4 @@ const page = ({ params }: { params: Promise<{ projectId: string }> }) => {
     )
 }
 
-export default page
+export default Page

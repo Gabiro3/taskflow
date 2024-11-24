@@ -1,10 +1,9 @@
 "use client"
 
-import Image from "next/image";
 import Wrapper from "./components/Wrapper";
 import { useEffect, useState } from "react";
 import { FolderGit2 } from "lucide-react";
-import { createProject, deleteProjectById, getProjectsCreatedByUser } from "./actions";
+import { deleteProjectById, getProjectsCreatedByUser } from "./actions";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "react-toastify";
 import { Project } from "@/type";
@@ -48,12 +47,12 @@ export default function Home() {
   const handleSubmit = async () => {
     try {
       const modal = document.getElementById('my_modal_3') as HTMLDialogElement
-      const project = await createProject(name, descrition, email)
+      // const project = await createProject(name, descrition, email)
       if (modal) {
         modal.close()
       }
-      setName(""),
-        setDescription("")
+      setName("")
+      setDescription("")
       fetchProjects(email)
       toast.success("Projet Créé")
     } catch (error) {
@@ -65,7 +64,18 @@ export default function Home() {
     <Wrapper>
       <div>
         {/* You can open the modal using document.getElementById('ID').showModal() method */}
-        <button className="btn  btn-primary mb-6" onClick={() => (document.getElementById('my_modal_3') as HTMLDialogElement).showModal()}>  Nouveau Projet <FolderGit2 /></button>
+        <button
+          className="btn btn-primary mb-6"
+          onClick={() => {
+            const modal = document.getElementById('my_modal_3') as HTMLDialogElement;
+            if (modal) {
+              modal.showModal();
+            }
+          }}
+        >
+          Nouveau Projet <FolderGit2 />
+        </button>
+
 
         <dialog id="my_modal_3" className="modal">
           <div className="modal-box">

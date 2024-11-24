@@ -11,13 +11,13 @@ import { toast } from 'react-toastify';
 import 'react-quill-new/dist/quill.snow.css';
 import { useUser } from '@clerk/nextjs';
 
-const page = ({ params }: { params: Promise<{ taskId: string }> }) => {
+const Page = ({ params }: { params: Promise<{ taskId: string }> }) => {
   const { user } = useUser();
   const email = user?.primaryEmailAddress?.emailAddress;
 
   const [task, setTask] = useState<Task | null>(null)
   const [taskId, setTaskId] = useState<string>("")
-  const [projectId, setProjectId] = useState("");
+  // const [projectId, setProjectId] = useState("");
   const [project, setProject] = useState<Project | null>(null);
   const [status, setStatus] = useState("");
   const [realStatus, setRealStatus] = useState("");
@@ -44,7 +44,7 @@ const page = ({ params }: { params: Promise<{ taskId: string }> }) => {
       setRealStatus(task.status)
       fetchProject(task.projectId)
     } catch (error) {
-      toast.error("Erreur lors du chargement des détails de la tâche.");
+      toast.error(`Erreur lors du chargement des détails de la tâche.: ${error}`);
     }
   }
 
@@ -53,7 +53,7 @@ const page = ({ params }: { params: Promise<{ taskId: string }> }) => {
       const project = await getProjectInfo(projectId, false)
       setProject(project)
     } catch (error) {
-      toast.error("Erreur lors du chargement du projet");
+      toast.error(`Erreur lors du chargement du projet: ${error}`);
     }
   }
 
@@ -71,7 +71,7 @@ const page = ({ params }: { params: Promise<{ taskId: string }> }) => {
       await updateTaskStatus(taskId, newStatus)
       fetchInfos(taskId)
     } catch (error) {
-      toast.error("Erreur lors du changement de status")
+      toast.error(`Erreur lors du changement de status: ${error}`)
     }
   }
 
@@ -103,7 +103,7 @@ const page = ({ params }: { params: Promise<{ taskId: string }> }) => {
       }
 
     } catch (error) {
-      toast.error("Erreur lors du changement de status")
+      toast.error(`Erreur lors du changement de status: ${error}`)
     }
   }
 
@@ -212,7 +212,7 @@ const page = ({ params }: { params: Promise<{ taskId: string }> }) => {
                 {/* if there is a button in form, it will close the modal */}
                 <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
               </form>
-              <h3 className="font-bold text-lg">C'est quoi la solutions ?</h3>
+              <h3 className="font-bold text-lg">C&apos;est quoi la solution ?</h3>
               <p className="py-4">Décrivez ce que vous avez fait exactement</p>
 
               <ReactQuill
@@ -237,4 +237,4 @@ const page = ({ params }: { params: Promise<{ taskId: string }> }) => {
   )
 }
 
-export default page
+export default Page

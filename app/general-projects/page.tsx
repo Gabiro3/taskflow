@@ -1,64 +1,65 @@
-"use client"
-import React, { useEffect, useState } from 'react'
-import Wrapper from '../components/Wrapper'
-import { SquarePlus } from 'lucide-react'
-import { toast } from 'react-toastify'
-import { addUserToProject, getProjectsAssociatedWithUser } from '../actions'
-import { useUser } from '@clerk/nextjs'
-import { Project } from '@/type'
-import ProjectComponent from '../components/ProjectComponent'
-import EmptyState from '../components/EmptyState'
+"use client";
 
-const page = () => {
-    const { user } = useUser()
-    const email = user?.primaryEmailAddress?.emailAddress as string
-    const [inviteCode, setInviteCode] = useState("")
-    const [associatedProjects, setAssociatedProjects] = useState<Project[]>([])
+import React, { useEffect, useState } from 'react';
+import Wrapper from '../components/Wrapper';
+import { SquarePlus } from 'lucide-react';
+import { toast } from 'react-toastify';
+import { addUserToProject, getProjectsAssociatedWithUser } from '../actions';
+import { useUser } from '@clerk/nextjs';
+import { Project } from '@/type';
+import ProjectComponent from '../components/ProjectComponent';
+import EmptyState from '../components/EmptyState';
+
+const Page = () => {
+    const { user } = useUser();
+    const email = user?.primaryEmailAddress?.emailAddress as string;
+    const [inviteCode, setInviteCode] = useState("");
+    const [associatedProjects, setAssociatedProjects] = useState<Project[]>([]);
 
     const fetchProjects = async (email: string) => {
         try {
-            const associated = await getProjectsAssociatedWithUser(email)
-            setAssociatedProjects(associated)
-        } catch (error) {
+            const associated = await getProjectsAssociatedWithUser(email);
+            setAssociatedProjects(associated);
+        } catch {
             toast.error("Erreur lors du chargement des projets:");
         }
-    }
+    };
 
     useEffect(() => {
         if (email) {
-            fetchProjects(email)
+            fetchProjects(email);
         }
-    }, [email])
+    }, [email]);
 
     const handleSubmit = async () => {
         try {
-            if (inviteCode != "") {
-                await addUserToProject(email, inviteCode)
-                fetchProjects(email)
-                setInviteCode("")
-                toast.success('Vous pouvez maintenant collaboré sur ce projet');
+            if (inviteCode) {
+                await addUserToProject(email, inviteCode);
+                fetchProjects(email);
+                setInviteCode("");
+                toast.success('Vous pouvez maintenant collaborer sur ce projet');
             } else {
                 toast.error('Il manque le code du projet');
             }
-        } catch (error) {
+        } catch {
             toast.error("Code invalide ou vous appartenez déjà au projet");
         }
-    }
+    };
 
     return (
         <Wrapper>
-            <div className='flex'>
-                <div className='mb-4'>
+            <div className="flex">
+                <div className="mb-4">
                     <input
                         value={inviteCode}
                         onChange={(e) => setInviteCode(e.target.value)}
                         type="text"
                         placeholder="Code d'invitation"
-                        className='w-full p-2 input input-bordered'
+                        className="w-full p-2 input input-bordered"
                     />
                 </div>
-                <button className='btn btn-primary ml-4' onClick={handleSubmit}>
-                    Rejoindre <SquarePlus className='w-4' />
+                <button className="btn btn-primary ml-4" onClick={handleSubmit}>
+                    Rejoindre <SquarePlus className="w-4" />
                 </button>
             </div>
 
@@ -67,14 +68,18 @@ const page = () => {
                     <ul className="w-full grid md:grid-cols-3 gap-6">
                         {associatedProjects.map((project) => (
                             <li key={project.id}>
-                                <ProjectComponent project={project} admin={0} style={true}></ProjectComponent>
+                                <ProjectComponent
+                                    project={project}
+                                    admin={0}
+                                    style={true}
+                                ></ProjectComponent>
                             </li>
                         ))}
                     </ul>
                 ) : (
                     <div>
                         <EmptyState
-                            imageSrc='/empty-project.png'
+                            imageSrc="/empty-project.png"
                             imageAlt="Picture of an empty project"
                             message="Aucun projet associé"
                         />
@@ -82,7 +87,7 @@ const page = () => {
                 )}
             </div>
         </Wrapper>
-    )
-}
+    );
+};
 
-export default page
+export default Page;

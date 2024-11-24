@@ -13,7 +13,7 @@ import EmptyState from '@/app/components/EmptyState'
 import TaskComponent from '@/app/components/TaskComponent';
 import { toast } from 'react-toastify';
 
-const page = ({ params }: { params: Promise<{ projectId: string }> }) => {
+const Page = ({ params }: { params: Promise<{ projectId: string }> }) => {
 
     const { user } = useUser();
     const email = user?.primaryEmailAddress?.emailAddress;
@@ -70,7 +70,7 @@ const page = ({ params }: { params: Promise<{ projectId: string }> }) => {
             fetchInfos(projectId)
             toast.success('Tache supprimée !')
         } catch (error) {
-            toast.error("Error Task project")
+            toast.error(`Error Task project: ${error}`)
         }
     }
 
@@ -182,4 +182,4 @@ const page = ({ params }: { params: Promise<{ projectId: string }> }) => {
     )
 }
 
-export default page
+export default Page
