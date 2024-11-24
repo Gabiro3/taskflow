@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "postgresql" // Changed to postgresql
+  url      = env("DATABASE_URL") // PostgreSQL connection URL
 }
 
 model User {
@@ -56,4 +56,5 @@ model ProjectUser {
   project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   @@unique([userId, projectId])
 }
+
 
